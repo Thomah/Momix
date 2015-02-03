@@ -1,5 +1,6 @@
 package fr.eseo.momix;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -55,6 +56,8 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_dictionnary) {
+            Intent intent = new Intent(this, DictionaryActivity.class);
+            startActivity(intent);
             return true;
         } else if(id == R.id.action_new) {
             generateAnagram();
