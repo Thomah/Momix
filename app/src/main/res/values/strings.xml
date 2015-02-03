@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Commun -->
     <string name="app_name">Momix</string>
     <string name="title_activity_main">Momix</string>
+    <string name="ok">OK</string>
+    <string name="back">Retour</string>
+
+    <!-- Actions -->
     <string name="action_new">Nouvelle partie</string>
     <string name="action_dictionnary">Dictionnaire</string>
 
+    <!-- Main activity -->
     <string name="anagram">Nouvelle partie</string>
-    <string name="won">Gagné !</string>
+    <string name="won">Victoire !</string>
+    <string name="won_content">Souhaitez-vous rejouer ?</string>
 
 </resources>
