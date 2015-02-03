@@ -12,6 +12,8 @@ import android.widget.ToggleButton;
 
 public class MainActivity extends ActionBarActivity {
 
+    private static final int nbButtonsPerRow = 7;
+    private static final int marginButtons = 5;
     private AnswerValidator validator;
     private int screenWidth;
     private int screenHeight;
@@ -90,6 +92,7 @@ public class MainActivity extends ActionBarActivity {
         int kButton = 0, kLetter = 0;
         char c = 0;
         int lengthString = validator.getAnagram().getGenerated().length();
+        int widthButton = (screenWidth - marginButtons * (nbButtonsPerRow - 1)) / nbButtonsPerRow;
         while(kLetter < lengthString) {
 
             // Add a button only if it is not a space
@@ -102,13 +105,13 @@ public class MainActivity extends ActionBarActivity {
             ToggleButton letter = new ToggleButton(this);
 
             // Parameters of the buttons
-            x = kButton % (screenWidth / 105);
-            y = kButton / (screenWidth / 105);
+            x = kButton % nbButtonsPerRow;
+            y = kButton / nbButtonsPerRow;
             GridLayout.LayoutParams param = new GridLayout.LayoutParams();
             param.height = GridLayout.LayoutParams.WRAP_CONTENT;
-            param.width = 100;
-            param.rightMargin = 5;
-            param.topMargin = 5;
+            param.width = widthButton;
+            param.rightMargin = marginButtons;
+            param.topMargin = marginButtons;
             param.columnSpec = GridLayout.spec(x);
             param.rowSpec = GridLayout.spec(y);
             letter.setLayoutParams(param);
