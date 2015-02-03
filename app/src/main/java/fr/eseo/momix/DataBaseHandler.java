@@ -1,6 +1,5 @@
 package fr.eseo.momix;
 
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,14 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.List;
 
-/**
- * Created by etudiant on 02/02/2015.
- */
-
-class DatabaseHandler extends SQLiteOpenHelper {
+public class DatabaseHandler extends SQLiteOpenHelper {
 
         private static final int DATABASE_VERSION = 1;
 
