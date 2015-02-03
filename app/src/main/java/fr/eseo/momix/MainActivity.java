@@ -11,10 +11,13 @@ import android.support.v7.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.util.List;
+
 public class MainActivity extends ActionBarActivity {
 
     private static final int nbButtonsPerRow = 7;
     private static final int marginButtons = 5;
+    private DatabaseHandler dh;
     private AnswerValidator validator;
     private int screenWidth;
     private int screenHeight;
@@ -35,14 +38,14 @@ public class MainActivity extends ActionBarActivity {
             screenWidth = metrics.widthPixels;
             screenHeight = metrics.heightPixels;
         }
-        screenWidth-= dpToPx(2 * 16);
-        screenHeight-= dpToPx(2 * 16);
+        screenWidth-= 2 * (int) getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin);
+        screenHeight-= 2 * (int) getResources().getDimensionPixelSize(R.dimen.activity_vertical_margin);
 
         // Generate anagram
+        dh = new DatabaseHandler(this);
         generateAnagram();
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -69,64 +72,74 @@ public class MainActivity extends ActionBarActivity {
 
     public void generateAnagram() {
 
-        // Creation of the anagram
-        Anagram a = new Anagram("Le petit chaperon rouge");
-        validator = new AnswerValidator(this);
-        validator.setAnagram(a);
+        // Pick a word
+        List<Word> words = dh.getDictionary();
+        if(words.size() >  0) {
+            int index = (int) (Math.random() * words.size());
 
-        // Setup of the anagram on the view
-        TextView anagram = (TextView) findViewById(R.id.anagram);
-        anagram.setText(validator.getAnagram().getGenerated());
+            // Creation of the anagram
+            Anagram a = new Anagram(words.get(index).getText());
+            validator = new AnswerValidator(this);
+            validator.setAnagram(a);
 
-        // Initialisation of the answer
-        TextView answerView = (TextView) findViewById(R.id.answer);
-        String answer = "";
-        for(int k = 0 ; k < validator.getAnagram().getAnswer().length() ; k++) {
-            answer+= ' ';
-        }
-        answerView.setText(answer);
+            // Setup of the anagram on the view
+            TextView anagram = (TextView) findViewById(R.id.anagram);
+            anagram.setText(validator.getAnagram().getGenerated());
 
-        // Remove previous buttons
-        GridLayout lettersLayout = (GridLayout) findViewById(R.id.letters);
-        lettersLayout.removeAllViews();
+            // Initialisation of the answer
+            TextView answerView = (TextView) findViewById(R.id.answer);
+            String answer = "";
+            for (int k = 0; k < validator.getAnagram().getAnswer().length(); k++) {
+                answer += ' ';
+            }
+            answerView.setText(answer);
 
-        // Setup of the answer buttons
-        int x, y;
-        int kButton = 0, kLetter = 0;
-        char c = 0;
-        int lengthString = validator.getAnagram().getGenerated().length();
-        int widthButton = (screenWidth - marginButtons * (nbButtonsPerRow - 1)) / nbButtonsPerRow;
-        while(kLetter < lengthString) {
+            // Remove previous buttons
+            GridLayout lettersLayout = (GridLayout) findViewById(R.id.letters);
+            lettersLayout.removeAllViews();
 
-            // Add a button only if it is not a space
-            do {
-                c = validator.getAnagram().getGenerated().charAt(kLetter);
-                kLetter++;
-            } while(c == ' ' && kLetter < lengthString);
+            // Setup of the answer buttons
+            int x, y;
+            int kButton = 0, kLetter = 0;
+            char c = 0;
+            int lengthString = validator.getAnagram().getGenerated().length();
+            int widthButton = (screenWidth - marginButtons * (nbButtonsPerRow - 1)) / nbButtonsPerRow;
+            while (kLetter < lengthString) {
 
-            // Creation of the button
-            ToggleButton letter = new ToggleButton(this);
+                // Add a button only if it is not a space
+                do {
+                    c = validator.getAnagram().getGenerated().charAt(kLetter);
+                    kLetter++;
+                } while (c == ' ' && kLetter < lengthString);
 
-            // Parameters of the buttons
-            x = kButton % nbButtonsPerRow;
-            y = kButton / nbButtonsPerRow;
-            GridLayout.LayoutParams param = new GridLayout.LayoutParams();
-            param.height = GridLayout.LayoutParams.WRAP_CONTENT;
-            param.width = widthButton;
-            param.rightMargin = marginButtons;
-            param.topMargin = marginButtons;
-            param.columnSpec = GridLayout.spec(x);
-            param.rowSpec = GridLayout.spec(y);
-            letter.setLayoutParams(param);
+                // Creation of the button
+                ToggleButton letter = new ToggleButton(this);
 
-            letter.setText("" + c);
-            letter.setTextOn("" + c);
-            letter.setTextOff("" + c);
-            letter.setOnClickListener(validator);
+                // Parameters of the buttons
+                x = kButton % nbButtonsPerRow;
+                y = kButton / nbButtonsPerRow;
+                GridLayout.LayoutParams param = new GridLayout.LayoutParams();
+                param.height = GridLayout.LayoutParams.WRAP_CONTENT;
+                param.width = widthButton;
+                param.rightMargin = marginButtons;
+                param.topMargin = marginButtons;
+                param.columnSpec = GridLayout.spec(x);
+                param.rowSpec = GridLayout.spec(y);
+                letter.setLayoutParams(param);
 
-            lettersLayout.addView(letter);
+                letter.setText("" + c);
+                letter.setTextOn("" + c);
+                letter.setTextOff("" + c);
+                letter.setOnClickListener(validator);
 
-            kButton++;
+                lettersLayout.addView(letter);
+
+                kButton++;
+            }
+        } else {
+            // Setup of the anagram on the view
+            TextView anagram = (TextView) findViewById(R.id.anagram);
+            anagram.setText(R.string.dictionnary_empty);
         }
 
     }

@@ -19,5 +19,6 @@
     <string name="anagram">Nouvelle partie</string>
     <string name="won">Victoire !</string>
     <string name="won_content">Souhaitez-vous rejouer ?</string>
+    <string name="dictionnary_empty">Dictionnaire vide !</string>
 
 </resources>
