@@ -67,4 +67,11 @@ class DatabaseHandler extends SQLiteOpenHelper {
         }
         return dictionary;
     }
+
+    public void deleteWord(Word word) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_DICTIONARY, KEY_ID + " = ?",
+                new String[] { String.valueOf(word.getId()) });
+        db.close();
+    }
 }
