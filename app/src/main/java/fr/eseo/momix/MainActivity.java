@@ -3,6 +3,7 @@ package fr.eseo.momix;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.internal.view.menu.MenuView;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Menu;
@@ -21,6 +22,7 @@ public class MainActivity extends ActionBarActivity {
     private AnswerValidator validator;
     private int screenWidth;
     private int screenHeight;
+    private int actualLevel = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,7 @@ public class MainActivity extends ActionBarActivity {
             startActivity(intent);
             return true;
         } else if(id == R.id.action_new) {
+            actualLevel = 1;
             generateAnagram();
             return true;
         }
@@ -72,13 +75,23 @@ public class MainActivity extends ActionBarActivity {
 
     public void generateAnagram() {
 
+        // Reset of the level
+        refreshLevelUI();
+
         // Pick a word
         List<Word> words = dh.getDictionary();
         if(words.size() >  0) {
-            int index = (int) (Math.random() * words.size());
+            int index = 0;
+            Word w;
+            if(DatabaseHandler.dicoPerso) {
+                index = (int) (Math.random() * words.size());
+                w = words.get(index);
+            } else {
+                w = dh.getWord(actualLevel);
+            }
 
             // Creation of the anagram
-            Anagram a = new Anagram(words.get(index).getText());
+            Anagram a = new Anagram(w.getText());
             validator = new AnswerValidator(this);
             validator.setAnagram(a);
 
@@ -144,18 +157,21 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-    public int dpToPx(int dp) {
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-        return px;
+    public void incActualLevel() {
+        actualLevel++;
+        refreshLevelUI();
     }
 
-    private char[] stringToChar(String s) {
-        char[] text = new char[s.length()];
-        for (int i=0; i<s.length(); i++) {
-            text[i] = s.charAt(i);
+    public void refreshLevelUI() {
+        MenuView.ItemView itemView = (MenuView.ItemView) findViewById(R.id.level);
+
+        if(itemView != null) {
+            if(DatabaseHandler.dicoPerso) {
+                itemView.setTitle(getResources().getString(R.string.level));
+            } else {
+                itemView.setTitle("Niveau " + actualLevel);
+            }
         }
-        return text;
     }
 
 }

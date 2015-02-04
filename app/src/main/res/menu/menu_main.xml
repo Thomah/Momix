@@ -2,6 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context="fr.eseo.momix.MainActivity">
 
+    <item android:id="@+id/level" android:title="@string/level"
+        android:orderInCategory="100" app:showAsAction="ifRoom" />
+
     <item android:id="@+id/action_new" android:title="@string/action_new"
         android:orderInCategory="100" app:showAsAction="ifRoom"
         android:icon="@drawable/ic_action_refresh"/>

@@ -93,8 +93,9 @@ public class AnswerValidator implements View.OnClickListener {
 
         if(actualAnswer.compareTo(anagram.getAnswer()) == 0) {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            activity.incActualLevel();
 
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             builder.setMessage(R.string.won_content)
                     .setTitle(R.string.won);
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -107,8 +108,6 @@ public class AnswerValidator implements View.OnClickListener {
                     // User cancelled the dialog
                 }
             });
-
-            // 3. Get the AlertDialog from create()
             AlertDialog dialog = builder.create();
             dialog.show();
 
