@@ -27,6 +27,7 @@ import java.util.List;
 public class DictionaryActivity extends ActionBarActivity {
 
     private DatabaseHandler dh;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,10 +55,10 @@ public class DictionaryActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_discard) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-            builder.setMessage(R.string.action_suppress) .setTitle(R.string.action_suppress);
+            builder.setMessage(R.string.action_suppressQuestion) .setTitle(R.string.action_suppress);
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) { // User cancelled the dialog } });
                     viderLeDictionaire();
@@ -97,22 +98,13 @@ public class DictionaryActivity extends ActionBarActivity {
 
         ArrayList<Modele> data = new ArrayList<>();
         for(Word w : dh.getDictionary()){
-            Modele m = new Modele(w.getText());
+            Modele m = new Modele(w.getText(), w);
             data.add(m);
         }
 
         ListView listView = (ListView) findViewById(R.id.listViewDictionary);
         Adapter adapter = new Adapter(this, data);
         listView.setAdapter(adapter);
-
-        ImageView suppr = (ImageView) findViewById(R.id.item_icon);
-
-        suppr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
 
 
@@ -145,8 +137,9 @@ public class DictionaryActivity extends ActionBarActivity {
 
     }
 
-
-
+    public DatabaseHandler getDh() {
+        return dh;
+    }
 }
 
 

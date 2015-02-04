@@ -9,11 +9,13 @@ import static fr.eseo.momix.R.id.item_icon;
 
         private int icon;
         private String title;
+        private Word word;
 
-        public Modele(String title) {
+        public Modele(String title, Word w) {
             super();
             this.icon = R.drawable.ic_action_remove;
             this.title = title;
+            this.word = w;
         }
 
 
@@ -25,6 +27,8 @@ import static fr.eseo.momix.R.id.item_icon;
         return title;
     }
 
-
+    public Word getWord() {
+        return word;
+    }
 }
 

@@ -10,16 +10,17 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by etudiant on 03/02/2015.
  */
 public class Adapter extends BaseAdapter {
 
-    private final Context context;
+    private final DictionaryActivity context;
     private final ArrayList<Modele> modelsArrayList;
 
-    public Adapter(Context context, ArrayList<Modele> modelsArrayList) {
+    public Adapter(DictionaryActivity context, ArrayList<Modele> modelsArrayList) {
         super();
         this.context = context;
         this.modelsArrayList = modelsArrayList;
@@ -41,12 +42,10 @@ public class Adapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
-        // 1. Create inflater
-        LayoutInflater inflater = LayoutInflater.from(context);
 
-        // 2. Get rowView from inflater
+        final LayoutInflater inflater = LayoutInflater.from(context);
 
         View rowView = null;
         rowView = inflater.inflate(R.layout.list_single, parent, false);
@@ -54,6 +53,11 @@ public class Adapter extends BaseAdapter {
         TextView titleView = (TextView) rowView.findViewById(R.id.item_title);
 
         titleView.setText(modelsArrayList.get(position).getTitle());
+
+        ImageView supprIcon = (ImageView) rowView.findViewById(R.id.item_icon);
+
+        OnSupprClick onSupprClick = new OnSupprClick(context, modelsArrayList.get(position).getWord());
+        supprIcon.setOnClickListener(onSupprClick);
 
         return rowView;
     }
