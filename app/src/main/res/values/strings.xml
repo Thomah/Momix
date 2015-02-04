@@ -12,6 +12,7 @@
     <string name="action_new">Nouvelle partie</string>
     <string name="action_dictionnary">Dictionnaire</string>
     <string name="action_suppress">Supprimer</string>
+    <string name="action_suppressQuestion">Voulez-vous vraiment supprimer toutes les phrases ?</string>
     <string name="action_addAWord">Ajouter</string>
     <string name="action_settings">Settings</string>
 

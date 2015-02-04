@@ -48,7 +48,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public List<Word> getDictionary() {
         List<Word> dictionary = new ArrayList<Word>();
-        String selectQuery = "SELECT  * FROM " + TABLE_DICTIONARY;
+        String selectQuery = "SELECT  * FROM " + TABLE_DICTIONARY + " ORDER BY " + KEY_TEXT;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {

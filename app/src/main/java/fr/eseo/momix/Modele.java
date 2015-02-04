@@ -1,5 +1,7 @@
 package fr.eseo.momix;
 
+import static fr.eseo.momix.R.id.item_icon;
+
 /**
  * Created by etudiant on 03/02/2015.
  */
@@ -7,17 +9,15 @@ package fr.eseo.momix;
 
         private int icon;
         private String title;
-        private String counter;
-        private boolean isGroupHeader = false;
+        private Word word;
 
-        public Modele(String title) {
+        public Modele(String title, Word w) {
             super();
+            this.icon = R.drawable.ic_action_remove;
             this.title = title;
+            this.word = w;
         }
 
-    public String getCounter() {
-        return counter;
-    }
 
     public int getIcon() {
         return icon;
@@ -27,13 +27,8 @@ package fr.eseo.momix;
         return title;
     }
 
-
-    public boolean isGroupHeader() {
-        return isGroupHeader;
-    }
-
-    public void setGroupHeader(boolean isGroupHeader) {
-        this.isGroupHeader = isGroupHeader;
+    public Word getWord() {
+        return word;
     }
 }
 

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -26,25 +27,16 @@ import java.util.List;
 public class DictionaryActivity extends ActionBarActivity {
 
     private DatabaseHandler dh;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_dictionnary);
         dh = new DatabaseHandler(this);
 
-        ArrayList<Modele> data = new ArrayList<Modele>();
-        for(Word w : dh.getDictionary()){
-            Modele m = new Modele(w.getText());
-            data.add(m);
-        }
+        afficherDictionnaire();
 
-        ListView listView = (ListView) findViewById(R.id.listViewDictionary);
-        Adapter adapter = new Adapter(this, data);
-        listView.setAdapter(adapter);
-
-       // afficherDictionnaire();
     }
 
 
@@ -63,10 +55,10 @@ public class DictionaryActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_discard) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-            builder.setMessage(R.string.action_suppress) .setTitle(R.string.action_suppress);
+            builder.setMessage(R.string.action_suppressQuestion) .setTitle(R.string.action_suppress);
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) { // User cancelled the dialog } });
                     viderLeDictionaire();
@@ -104,40 +96,21 @@ public class DictionaryActivity extends ActionBarActivity {
     public void afficherDictionnaire(){
 
 
-        final List<Word> dictionary = dh.getDictionary();
-        final ArrayList<String> wordList = new ArrayList<String>();
-
-        for(Word w : dictionary){
-            wordList.add(w.getText());
+        ArrayList<Modele> data = new ArrayList<>();
+        for(Word w : dh.getDictionary()){
+            Modele m = new Modele(w.getText(), w);
+            data.add(m);
         }
 
-        final StableArrayAdapter adapter = new StableArrayAdapter(this, android.R.layout.simple_list_item_1, wordList);
-
-        ListView dictionaryListView = (ListView) findViewById(R.id.listViewDictionary);
-        dictionaryListView.setAdapter(adapter);
-
-        dictionaryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-            @Override
-            public void onItemClick(AdapterView<?> parent, final View view,
-                                    final int position, long id) {
-                final String item = (String) parent.getItemAtPosition(position);
-                dh.deleteWord(dictionary.get(position));
-                view.animate().setDuration(2000).alpha(0).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        wordList.remove(item);
-                        adapter.notifyDataSetChanged();
-                        view.setAlpha(1);
-                    }
-                });
-                afficherDictionnaire();
-            }
+        ListView listView = (ListView) findViewById(R.id.listViewDictionary);
+        Adapter adapter = new Adapter(this, data);
+        listView.setAdapter(adapter);
 
 
-        });
+
     }
+
+
 
     private class StableArrayAdapter extends ArrayAdapter<String> {
 
@@ -164,8 +137,9 @@ public class DictionaryActivity extends ActionBarActivity {
 
     }
 
-
-
+    public DatabaseHandler getDh() {
+        return dh;
+    }
 }
 
 
