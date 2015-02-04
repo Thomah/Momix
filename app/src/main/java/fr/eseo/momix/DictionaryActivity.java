@@ -13,9 +13,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 
@@ -27,6 +30,7 @@ import java.util.List;
 public class DictionaryActivity extends ActionBarActivity {
 
     private DatabaseHandler dh;
+    private boolean utiliserDicoPerso = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,18 @@ public class DictionaryActivity extends ActionBarActivity {
         dh = new DatabaseHandler(this);
 
         afficherDictionnaire();
+
+        CheckBox checkBox = (CheckBox) this.findViewById(R.id.checkBoxDictionnairePredefini);
+        checkBox.setChecked(!dh.dicoPerso);
+        Button buttonAjouter = (Button) findViewById(R.id.button2);
+        buttonAjouter.setEnabled(!checkBox.isChecked());
+        ListView listView = (ListView) findViewById(R.id.listViewDictionary);
+        listView.setEnabled(!checkBox.isChecked());
+        EditText editText = (EditText) findViewById(R.id.motPropose);
+        editText.setEnabled(!checkBox.isChecked());
+
+        OnChooseDictionaryClick onChooseDictionaryClick = new OnChooseDictionaryClick(this);
+        checkBox.setOnClickListener(onChooseDictionaryClick);
 
     }
 
@@ -94,19 +110,17 @@ public class DictionaryActivity extends ActionBarActivity {
     }
 
     public void afficherDictionnaire(){
-
-
         ArrayList<Modele> data = new ArrayList<>();
-        for(Word w : dh.getDictionary()){
-            Modele m = new Modele(w.getText(), w);
-            data.add(m);
+        if(dh.dicoPerso) {
+
+            for (Word w : dh.getDictionary()) {
+                Modele m = new Modele(w.getText(), w);
+                data.add(m);
+            }
         }
-
-        ListView listView = (ListView) findViewById(R.id.listViewDictionary);
-        Adapter adapter = new Adapter(this, data);
-        listView.setAdapter(adapter);
-
-
+            ListView listView = (ListView) findViewById(R.id.listViewDictionary);
+            Adapter adapter = new Adapter(this, data);
+            listView.setAdapter(adapter);
 
     }
 
@@ -139,6 +153,10 @@ public class DictionaryActivity extends ActionBarActivity {
 
     public DatabaseHandler getDh() {
         return dh;
+    }
+
+    public void setUtiliserDicoPerso(boolean utiliserDicoPerso) {
+        this.utiliserDicoPerso = utiliserDicoPerso;
     }
 }
 

@@ -11,11 +11,16 @@ import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-        private static final int DATABASE_VERSION = 1;
+        private static final int DATABASE_VERSION = 2;
 
         private static final String DATABASE_NAME = "dictionaryManager";
 
-        private static final String TABLE_DICTIONARY = "dictionary";
+        public static boolean dicoPerso = true;
+
+        private static final String TABLE_DICTIONNAIRE_PERSO = "dictionnairePerso";
+        private static final String TABLE_DICTIONNAIRE_PREDEFINI = "dictionnairePredefini";
+
+        private String TABLE_DICTIONNAIRE_EN_COURS = "dictionnairePerso";
 
         private static final String KEY_ID = "id";
         private static final String KEY_TEXT = "text";
@@ -26,14 +31,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_DICTIONARY + "("
+            String CREATE_WORDS_TABLE = "CREATE TABLE " + TABLE_DICTIONNAIRE_PERSO + "("
                     + KEY_ID + " INTEGER PRIMARY KEY," + KEY_TEXT + " TEXT)";
-            db.execSQL(CREATE_CONTACTS_TABLE);
+            db.execSQL(CREATE_WORDS_TABLE);
+
+            String CREATE_WORDS_TABLE2 = "CREATE TABLE " + TABLE_DICTIONNAIRE_PREDEFINI + "("
+                    + KEY_ID + " INTEGER PRIMARY KEY," + KEY_TEXT + " TEXT)";
+            db.execSQL(CREATE_WORDS_TABLE2);
+            db.execSQL("INSERT INTO " + TABLE_DICTIONNAIRE_PREDEFINI + " ("+KEY_ID + "," + KEY_TEXT +") values(0,'Sauter à pieds joins')");
+            db.execSQL("INSERT INTO " + TABLE_DICTIONNAIRE_PREDEFINI + " ("+KEY_ID + "," + KEY_TEXT +") values(1,'Jouer des maracasses')");
+            db.execSQL("INSERT INTO " + TABLE_DICTIONNAIRE_PREDEFINI + " ("+KEY_ID + "," + KEY_TEXT +") values(2,'Chanter à capella')");
+            db.execSQL("INSERT INTO " + TABLE_DICTIONNAIRE_PREDEFINI + " ("+KEY_ID + "," + KEY_TEXT +") values(3,'Avaler de travers')");
+            db.execSQL("INSERT INTO " + TABLE_DICTIONNAIRE_PREDEFINI + " ("+KEY_ID + "," + KEY_TEXT +") values(4,'Mettre son clignotant')");
+            db.execSQL("INSERT INTO " + TABLE_DICTIONNAIRE_PREDEFINI + " ("+KEY_ID + "," + KEY_TEXT +") values(5,'Allumer la lumière')");
+
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_DICTIONARY);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_DICTIONNAIRE_PERSO);
             onCreate(db);
         }
 
@@ -42,13 +58,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_TEXT, word);
-        db.insert(TABLE_DICTIONARY, null, values);
+        db.insert(TABLE_DICTIONNAIRE_PERSO, null, values);
         db.close();
     }
 
     public List<Word> getDictionary() {
+        selectDictionary();
         List<Word> dictionary = new ArrayList<Word>();
-        String selectQuery = "SELECT  * FROM " + TABLE_DICTIONARY + " ORDER BY " + KEY_TEXT;
+        String selectQuery = "SELECT  * FROM " + TABLE_DICTIONNAIRE_EN_COURS + " ORDER BY " + KEY_TEXT;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -64,8 +81,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public void deleteWord(Word word) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_DICTIONARY, KEY_ID + " = ?",
+        db.delete(TABLE_DICTIONNAIRE_PERSO, KEY_ID + " = ?",
                 new String[] { String.valueOf(word.getId()) });
         db.close();
     }
+
+    public void selectDictionary(){
+        if(dicoPerso){
+            TABLE_DICTIONNAIRE_EN_COURS = TABLE_DICTIONNAIRE_PERSO;
+        }else{
+            TABLE_DICTIONNAIRE_EN_COURS = TABLE_DICTIONNAIRE_PREDEFINI;
+        }
+    }
+
+
+    public void setDicoPerso(boolean dicoPerso) {
+        this.dicoPerso = dicoPerso;
+    }
+
 }
