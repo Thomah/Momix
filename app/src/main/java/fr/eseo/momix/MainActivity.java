@@ -1,9 +1,11 @@
 package fr.eseo.momix;
 
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.internal.view.menu.MenuView;
+import android.support.v7.widget.ActionMenuView;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Menu;
@@ -51,8 +53,22 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        MenuItem item = menu.findItem(R.id.level);
+        if(item != null) {
+            if(DatabaseHandler.dicoPerso) {
+                item.setTitle(getResources().getString(R.string.level));
+            } else {
+                item.setTitle("Niveau " + actualLevel);
+            }
+        }
+
+        // Reset of the level UI
+        refreshLevelUI();
+
         return true;
     }
 
@@ -75,7 +91,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void generateAnagram() {
 
-        // Reset of the level
+        // Reset of the level UI
         refreshLevelUI();
 
         // Pick a word
@@ -91,7 +107,7 @@ public class MainActivity extends ActionBarActivity {
             }
 
             // Creation of the anagram
-            Anagram a = new Anagram(w.getText());
+            Anagram a = new Anagram(w.getText().toUpperCase());
             validator = new AnswerValidator(this);
             validator.setAnagram(a);
 
@@ -127,6 +143,9 @@ public class MainActivity extends ActionBarActivity {
 
                 // Creation of the button
                 ToggleButton letter = new ToggleButton(this);
+                letter.setBackgroundColor(getResources().getColor(R.color.answer_background));
+                letter.setTextColor(getResources().getColor(R.color.answer_text));
+
 
                 // Parameters of the buttons
                 x = kButton % nbButtonsPerRow;
@@ -158,7 +177,13 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void incActualLevel() {
-        actualLevel++;
+
+        List<Word> words = dh.getDictionary();
+        if(actualLevel >= words.size()) {
+            actualLevel = 1;
+        } else {
+            actualLevel++;
+        }
         refreshLevelUI();
     }
 
@@ -172,6 +197,14 @@ public class MainActivity extends ActionBarActivity {
                 itemView.setTitle("Niveau " + actualLevel);
             }
         }
+    }
+
+    public DatabaseHandler getDatabaseHandler() {
+        return dh;
+    }
+
+    public int getActualLevel() {
+        return actualLevel;
     }
 
 }

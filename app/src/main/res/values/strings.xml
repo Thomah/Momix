@@ -20,6 +20,7 @@
     <string name="anagram">Nouvelle partie</string>
     <string name="won">Victoire !</string>
     <string name="won_content">Souhaitez-vous rejouer ?</string>
+    <string name="wonlast_content">Vous avez terminé tous les niveaux. Souhaitez-vous redémarrer ?</string>
     <string name="dictionnary_empty">Dictionnaire vide !</string>
     <string name="level">Freestyle</string>
 

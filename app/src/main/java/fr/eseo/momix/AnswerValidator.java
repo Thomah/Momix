@@ -2,6 +2,7 @@ package fr.eseo.momix;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import java.util.List;
 
 public class AnswerValidator implements View.OnClickListener {
 
@@ -40,6 +43,11 @@ public class AnswerValidator implements View.OnClickListener {
 
         int k;
         if(b.isChecked()) {
+
+            // Changing the background
+            b.setBackgroundColor(activity.getResources().getColor(R.color.answer_checked_background));
+            b.setTextColor(activity.getResources().getColor(R.color.answer_checked_text));
+
             k = 0;
             boolean characterFound = false;
             while(!characterFound && k < input.length) {
@@ -61,6 +69,11 @@ public class AnswerValidator implements View.OnClickListener {
                 }
             }
         } else {
+
+            // Changing the background
+            b.setBackgroundColor(activity.getResources().getColor(R.color.answer_background));
+            b.setTextColor(activity.getResources().getColor(R.color.answer_text));
+
             k = input.length - 1;
             boolean characterFound = false;
             while(!characterFound && k >= 0) {
@@ -93,10 +106,16 @@ public class AnswerValidator implements View.OnClickListener {
 
         if(actualAnswer.compareTo(anagram.getAnswer()) == 0) {
 
-            activity.incActualLevel();
+            String content;
+            List<Word> words = activity.getDatabaseHandler().getDictionary();
+            if(activity.getActualLevel() >= words.size()) {
+                content = activity.getResources().getString(R.string.wonlast_content);
+            } else {
+                content = activity.getResources().getString(R.string.wonlast_content);
+            }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            builder.setMessage(R.string.won_content)
+            builder.setMessage(content)
                     .setTitle(R.string.won);
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
@@ -110,6 +129,10 @@ public class AnswerValidator implements View.OnClickListener {
             });
             AlertDialog dialog = builder.create();
             dialog.show();
+
+
+
+            activity.incActualLevel();
 
         }
 

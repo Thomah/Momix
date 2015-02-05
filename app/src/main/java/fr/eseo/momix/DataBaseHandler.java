@@ -39,12 +39,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String CREATE_WORDS_TABLE2 = "CREATE TABLE " + TABLE_DICTIONNAIRE_PREDEFINI + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_TEXT + " TEXT)";
         db.execSQL(CREATE_WORDS_TABLE2);
-        db.execSQL("INSERT INTO " + TABLE_DICTIONNAIRE_PREDEFINI + " ("+KEY_ID + "," + KEY_TEXT +") values(0,'Sauter à pieds joins')");
-        db.execSQL("INSERT INTO " + TABLE_DICTIONNAIRE_PREDEFINI + " ("+KEY_ID + "," + KEY_TEXT +") values(1,'Jouer des maracasses')");
-        db.execSQL("INSERT INTO " + TABLE_DICTIONNAIRE_PREDEFINI + " ("+KEY_ID + "," + KEY_TEXT +") values(2,'Chanter à capella')");
-        db.execSQL("INSERT INTO " + TABLE_DICTIONNAIRE_PREDEFINI + " ("+KEY_ID + "," + KEY_TEXT +") values(3,'Avaler de travers')");
-        db.execSQL("INSERT INTO " + TABLE_DICTIONNAIRE_PREDEFINI + " ("+KEY_ID + "," + KEY_TEXT +") values(4,'Mettre son clignotant')");
-        db.execSQL("INSERT INTO " + TABLE_DICTIONNAIRE_PREDEFINI + " ("+KEY_ID + "," + KEY_TEXT +") values(5,'Allumer la lumière')");
+        db.execSQL("INSERT INTO " + TABLE_DICTIONNAIRE_PREDEFINI + " ("+KEY_ID + "," + KEY_TEXT +") values(1,'Sauter à pieds joins')");
+        db.execSQL("INSERT INTO " + TABLE_DICTIONNAIRE_PREDEFINI + " ("+KEY_ID + "," + KEY_TEXT +") values(2,'Jouer des maracasses')");
+        db.execSQL("INSERT INTO " + TABLE_DICTIONNAIRE_PREDEFINI + " ("+KEY_ID + "," + KEY_TEXT +") values(3,'Chanter à capella')");
+        db.execSQL("INSERT INTO " + TABLE_DICTIONNAIRE_PREDEFINI + " ("+KEY_ID + "," + KEY_TEXT +") values(4,'Avaler de travers')");
+        db.execSQL("INSERT INTO " + TABLE_DICTIONNAIRE_PREDEFINI + " ("+KEY_ID + "," + KEY_TEXT +") values(5,'Mettre son clignotant')");
+        db.execSQL("INSERT INTO " + TABLE_DICTIONNAIRE_PREDEFINI + " ("+KEY_ID + "," + KEY_TEXT +") values(6,'Allumer la lumière')");
 
     }
 
