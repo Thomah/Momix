@@ -1,7 +1,5 @@
 package fr.eseo.momix;
 
-import static fr.eseo.momix.R.id.item_icon;
-
 /**
  * Created by etudiant on 03/02/2015.
  */
@@ -13,7 +11,7 @@ import static fr.eseo.momix.R.id.item_icon;
 
         public Modele(String title, Word w) {
             super();
-            this.icon = R.drawable.ic_action_remove;
+            this.icon = R.mipmap.ic_action_remove;
             this.title = title;
             this.word = w;
         }

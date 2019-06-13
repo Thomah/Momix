@@ -1,22 +1,20 @@
 package fr.eseo.momix;
 
 import android.content.Intent;
-import android.provider.ContactsContract;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.internal.view.menu.MenuView;
-import android.support.v7.widget.ActionMenuView;
+import android.support.v7.view.menu.MenuView;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v7.widget.GridLayout;
+import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import java.util.List;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     private static final int nbButtonsPerRow = 7;
     private static final int marginButtons = 5;
@@ -32,24 +30,19 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         // Get screen width and height
-        if(android.os.Build.VERSION.SDK_INT < 10) {
-            Display display = getWindowManager().getDefaultDisplay();
-            screenWidth = display.getWidth();
-            screenHeight = display.getHeight();
-        } else {
-            DisplayMetrics metrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            screenWidth = metrics.widthPixels;
-            screenHeight = metrics.heightPixels;
-        }
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        screenWidth = metrics.widthPixels;
+        screenHeight = metrics.heightPixels;
+
         screenWidth-= 2 * (int) getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin);
         screenHeight-= 2 * (int) getResources().getDimensionPixelSize(R.dimen.activity_vertical_margin);
 
         // Generate anagram
         dh = new DatabaseHandler(this);
         generateAnagram();
-
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -173,7 +166,6 @@ public class MainActivity extends ActionBarActivity {
             TextView anagram = (TextView) findViewById(R.id.anagram);
             anagram.setText(R.string.dictionnary_empty);
         }
-
     }
 
     public void incActualLevel() {
@@ -188,7 +180,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void refreshLevelUI() {
-        MenuView.ItemView itemView = (MenuView.ItemView) findViewById(R.id.level);
+        MenuView.ItemView itemView = findViewById(R.id.level);
 
         if(itemView != null) {
             if(DatabaseHandler.dicoPerso) {
@@ -206,5 +198,4 @@ public class MainActivity extends ActionBarActivity {
     public int getActualLevel() {
         return actualLevel;
     }
-
 }
