@@ -42,13 +42,11 @@ jobs:
         ANDROID_SIGNING_KEYSTORE_PASS: ${{ secrets.ANDROID_SIGNING_KEYSTORE_PASS }}
     - name: Build release
       run: bash ./gradlew :app:assembleRelease
-    - name: Debug
-      run: ls -all ${{ github.workspace }}/android/app/build/outputs/apk/release
     - name: Upload APK as artifact
       uses: actions/upload-artifact@v2
       with:
         name: App
-        path: ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk
+        path: ${{ github.workspace }}/app/build/outputs/apk/release/app-release.apk
 
   release:
     needs: [verify-version, upload-apk]
@@ -82,6 +80,8 @@ jobs:
         WORKSPACE: ${{ github.workspace }}
         GPG_DECRYPT_PASSPHRASE: ${{ secrets.GPG_DECRYPT_PASSPHRASE }}
         ANDROID_SIGNING_KEYSTORE_PASS: ${{ secrets.ANDROID_SIGNING_KEYSTORE_PASS }}
+    - name: Build release
+      run: bash ./gradlew :app:assembleRelease
     - name: Upload APK
       id: upload-apk
       uses: actions/upload-release-asset@v1
