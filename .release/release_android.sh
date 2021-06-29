@@ -14,4 +14,4 @@ gpg --quiet --batch --yes --decrypt --passphrase="$GPG_DECRYPT_PASSPHRASE" --out
 
 # Create a JKS keystore
 openssl pkcs12 -export -in $SCRIPT_LOCATION/android-signing.pem -inkey $SCRIPT_LOCATION/android-signing.key -name "thomah" -out $SCRIPT_LOCATION/keystore.p12 -password pass:$ANDROID_SIGNING_KEYSTORE_PASS
-keytool -importkeystore -deststorepass $ANDROID_SIGNING_KEYSTORE_PASS -destkeystore $WORKSPACE/keystore.jks -deststoretype JKS -srcstorepass $ANDROID_SIGNING_KEYSTORE_PASS -srckeystore $SCRIPT_LOCATION/keystore.p12 -srcstoretype PKCS12
+keytool -importkeystore -deststorepass $ANDROID_SIGNING_KEYSTORE_PASS -destkeystore $WORKSPACE/app/keystore.jks -deststoretype JKS -srcstorepass $ANDROID_SIGNING_KEYSTORE_PASS -srckeystore $SCRIPT_LOCATION/keystore.p12 -srcstoretype PKCS12
